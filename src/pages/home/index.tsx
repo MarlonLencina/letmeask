@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { Container,
          Sidebar,
@@ -15,26 +15,26 @@ import logoSVG from "../../assets/images/logo.svg"
 import googleSVG from "../../assets/images/google-icon.svg"
 import { Button } from "../../components/button";
 
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-import {auth, Firebase} from '../../service/firebase'
+import { useAuth } from "../../hooks/auth";
 
 export const Home = () => {
 
     const navigate = useNavigate()
 
+    const {
+        signWithGoogle,
+        user
+    } = useAuth()
+
     const handleSignIn = async () => {
 
-        console.log('action fired')
-        const provider = new Firebase.auth.GoogleAuthProvider();
+        if(!user){
+            await signWithGoogle()
+        }
 
-        const response = await auth.signInWithPopup(provider)
-
-        console.log(response)
-
-        navigate('/new-room')
-        console.log('action closed')
-
+        navigate('new-room')
     }
 
     return (
@@ -51,9 +51,7 @@ export const Home = () => {
                 <Logo>
                     <img src={logoSVG} alt="logo" />
                 </Logo>
-                <ButtonGoogle onClick={() => {
-                    handleSignIn()
-                }}>
+                <ButtonGoogle onClick={handleSignIn}>
                     <img src={googleSVG} alt="logo do google" ></img>
                     <p>Crie sua sala com o google</p>
                 </ButtonGoogle>

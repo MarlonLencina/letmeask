@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import { Container,
          Sidebar,
@@ -15,11 +15,15 @@ import logoSVG from "../../assets/images/logo.svg"
 import googleSVG from "../../assets/images/google-icon.svg"
 import { Button } from "../../components/button";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext, useAuth } from "../../hooks/auth";
 
 
 export const NewRoom = () => {
 
     const navigate = useNavigate()
+    const {user} = useAuth()
+
+
 
     const handleCreateRoom = () => {
 
@@ -40,6 +44,7 @@ export const NewRoom = () => {
                 <Logo>
                     <img src={logoSVG} alt="logo" />
                 </Logo>
+                <h1>{user?.name}</h1>
                 <Title>
                     Crie uma nova sala
                 </Title>
